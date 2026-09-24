@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>لوحة التحكم — TEA ESTATE</title>
+
+<style>
+@font-face{
+  font-family:'Amiri';
+  src:url('Amiri-Regular.ttf') format('truetype');
+  font-display:swap;
+}
+@font-face{
+  font-family:'Constantia';
+  src:url('Constantia.ttf') format('truetype');
+  font-display:swap;
+}
+
+:root{
+  --ink:#2a1a10;
+  --paper:#efe7d8;
+  --card:#fbf7ee;
+  --gold:#c8973f;
+  --gold-dark:#a87a28;
+  --wine:#5a1a1f;
+  --line:#dccfb6;
+  --muted:#7a6a58;
+  --danger:#a3281f;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  min-height:100svh;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Amiri','Constantia',serif;
+  font-size:18px;
+  line-height:1.6;
+  padding:20px 14px 50px;
+}
+
+.hidden{ display:none !important; }
+
+button{ font-family:inherit; font-size:16px; cursor:pointer; }
+button:focus-visible, input:focus-visible{ outline:3px solid var(--gold); outline-offset:2px; }
+
+/* ---------- Login ---------- */
+.login{
+  max-width:380px;
+  margin:9vh auto 0;
+  text-align:center;
+}
+.login img{ width:210px; max-width:70%; display:block; margin:0 auto 18px; }
+.panel{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:26px 22px;
+  box-shadow:0 12px 30px rgba(60,40,10,.12);
+}
+.panel h1{ margin:0 0 6px; font-size:26px; color:var(--wine); }
+.panel p{ margin:0 0 18px; color:var(--muted); font-size:16px; }
+
+.field{
+  width:100%;
+  padding:14px 18px;
+  border-radius:999px;
+  border:1px solid var(--gold);
+  background:#fff;
+  color:var(--ink);
+  font-family:inherit;
+  font-size:17px;
+  text-align:center;
+}
+.btn-main{
+  width:100%;
+  margin-top:12px;
+  padding:14px 18px;
+  border:none;
+  border-radius:999px;
+  color:#fff;
+  background:linear-gradient(180deg,#d6a15a,#c0853c);
+  box-shadow:0 6px 14px rgba(0,0,0,.15);
+}
+.btn-main:disabled{ opacity:.6; cursor:default; }
+.msg{ min-height:24px; margin:12px 0 0; font-size:16px; color:var(--danger); }
+
+/* ---------- Dashboard ---------- */
+.dash{ max-width:900px; margin:0 auto; }
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+.topbar h1{ margin:0; font-size:24px; color:var(--wine); }
+.topbar img{ height:46px; }
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:16px;
+}
+.stat{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:12px 8px;
+  text-align:center;
+}
+.stat b{ display:block; font-size:30px; line-height:1.2; color:var(--wine); }
+.stat span{ font-size:15px; color:var(--muted); }
+
+.tools{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:14px;
+}
+.tools .field{ flex:1 1 200px; text-align:start; padding:11px 16px; }
+.btn{
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid var(--gold);
+  background:var(--card);
+  color:var(--ink);
+}
+.btn:active{ transform:scale(.97); }
+.btn.gold{ background:var(--gold); color:#fff; border-color:var(--gold-dark); }
+
+.table-wrap{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow-x:auto;
+}
+table{ width:100%; border-collapse:collapse; min-width:520px; }
+th, td{ padding:11px 14px; text-align:start; border-bottom:1px solid var(--line); font-size:17px; }
+th{ font-size:15px; color:var(--muted); background:#f3ecdc; position:sticky; top:0; }
+tr:last-child td{ border-bottom:none; }
+td.email{ direction:ltr; text-align:right; font-family:'Constantia',serif; word-break:break-all; }
+td.num{ color:var(--muted); width:48px; }
+.del{
+  border:none;
+  background:transparent;
+  color:var(--danger);
+  font-size:15px;
+  padding:4px 8px;
+}
+.empty{ padding:34px 18px; text-align:center; color:var(--muted); }
+
+.toast{
+  position:fixed;
+  bottom:22px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--ink);
+  color:#fff;
+  padding:10px 20px;
+  border-radius:999px;
+  font-size:16px;
+  z-index:10;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+
+@media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<main class="login" id="loginView">
+  <img src="logo.png" alt="TEA ESTATE">
+  <form class="panel" id="loginForm">
+    <h1>لوحة التحكم</h1>
+    <p>أدخل الرمز السري للدخول</p>
+    <input class="field" type="password" id="pw" autocomplete="current-password"
+           placeholder="الرمز السري" aria-label="الرمز السري" required>
+    <button class="btn-main" type="submit" id="loginBtn">دخول</button>
+    <p class="msg" id="loginMsg" role="alert"></p>
+  </form>
+</main>
+
+<!-- ============ DASHBOARD ============ -->
+<main class="dash hidden" id="dashView">
+  <div class="topbar">
+    <img src="logo.png" alt="TEA ESTATE">
+    <h1>المهتمين بالمتجر</h1>
+    <button class="btn" id="logoutBtn" type="button">خروج</button>
+  </div>
+
+  <section class="stats" aria-label="إحصائيات">
+    <div class="stat"><b id="statTotal">0</b><span>الإجمالي</span></div>
+    <div class="stat"><b id="statToday">0</b><span>اليوم</span></div>
+    <div class="stat"><b id="statWeek">0</b><span>آخر ٧ أيام</span></div>
+  </section>
+
+  <section class="tools">
+    <input class="field" type="search" id="search" placeholder="ابحث بالإيميل" aria-label="ابحث بالإيميل">
+    <button class="btn gold" id="copyBtn" type="button">نسخ الإيميلات</button>
+    <button class="btn gold" id="csvBtn" type="button">تصدير CSV</button>
+    <button class="btn" id="refreshBtn" type="button">تحديث</button>
+  </section>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>الإيميل</th><th>اللغة</th><th>التاريخ</th><th></th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty hidden" id="emptyMsg"></div>
+  </div>
+</main>
+
+<div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   SETTINGS — fill these three values
+   ============================================================ */
+var SUPABASE_URL      = "PASTE_SUPABASE_PROJECT_URL_HERE";   // https://xxxx.supabase.co
+var SUPABASE_ANON_KEY = "PASTE_ANON_PUBLIC_KEY_HERE";        // the "anon public" key only
+var ADMIN_EMAIL       = "PUT_ADMIN_EMAIL_HERE";              // same email as in supabase-setup.sql
+/* ============================================================ */
+
+var session = null;
+var allRows = [];
+
+function $(id){ return document.getElementById(id); }
+
+function configured(){
+  return SUPABASE_URL.indexOf('https://') === 0 && ADMIN_EMAIL.indexOf('@') > 0 && SUPABASE_ANON_KEY.length > 20;
+}
+
+function toast(text){
+  var el = $('toast');
+  el.textContent = text;
+  el.classList.remove('hidden');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(function(){ el.classList.add('hidden'); }, 2200);
+}
+
+/* ---------- session (cleared when the tab is closed) ---------- */
+function loadSession(){
+  try{
+    var s = JSON.parse(sessionStorage.getItem('teaEstateAdmin'));
+    if (s && s.token && s.exp > Date.now()) return s;
+  }catch(e){}
+  return null;
+}
+function saveSession(s){
+  session = s;
+  try{ sessionStorage.setItem('teaEstateAdmin', JSON.stringify(s)); }catch(e){}
+}
+function logout(){
+  session = null;
+  allRows = [];
+  try{ sessionStorage.removeItem('teaEstateAdmin'); }catch(e){}
+  $('dashView').classList.add('hidden');
+  $('loginView').classList.remove('hidden');
+  $('pw').value = '';
+}
+
+/* ---------- API ---------- */
+async function login(password){
+  var res = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+    body: JSON.stringify({ email: ADMIN_EMAIL, password: password })
+  });
+  if (!res.ok) { throw new Error('bad_login'); }
+  var d = await res.json();
+  saveSession({ token: d.access_token, exp: Date.now() + Math.max(60, (d.expires_in || 3600) - 30) * 1000 });
+}
+
+async function api(path, options){
+  options = options || {};
+  options.headers = Object.assign({
+    'apikey': SUPABASE_ANON_KEY,
+    'Authorization': 'Bearer ' + session.token
+  }, options.headers || {});
+  var res = await fetch(SUPABASE_URL + '/rest/v1/' + path, options);
+  if (res.status === 401) { logout(); throw new Error('expired'); }
+  if (!res.ok) { throw new Error('http_' + res.status); }
+  return res;
+}
+
+async function loadAll(){
+  var rows = [], offset = 0, step = 1000;
+  while (true){
+    var res = await api('subscribers?select=id,created_at,email,lang&order=created_at.desc&limit=' + step + '&offset=' + offset);
+    var batch = await res.json();
+    rows = rows.concat(batch);
+    if (batch.length < step) break;
+    offset += step;
+  }
+  allRows = rows;
+  render();
+}
+
+/* ---------- render (uses textContent only, so emails can never inject HTML) ---------- */
+var dateFmt = new Intl.DateTimeFormat('ar-SA-u-ca-gregory', { timeZone: 'Asia/Riyadh', dateStyle: 'medium', timeStyle: 'short' });
+function dayKey(iso){ return new Date(iso).toLocaleDateString('en-CA', { timeZone: 'Asia/Riyadh' }); }
+
+function filtered(){
+  var q = $('search').value.trim().toLowerCase();
+  if (!q) return allRows;
+  return allRows.filter(function(r){ return r.email.indexOf(q) !== -1; });
+}
+
+function render(){
+  var today = dayKey(new Date().toISOString());
+  var weekAgo = Date.now() - 7 * 24 * 3600 * 1000;
+  $('statTotal').textContent = allRows.length.toLocaleString('en-US');
+  $('statToday').textContent = allRows.filter(function(r){ return dayKey(r.created_at) === today; }).length.toLocaleString('en-US');
+  $('statWeek').textContent  = allRows.filter(function(r){ return new Date(r.created_at).getTime() >= weekAgo; }).length.toLocaleString('en-US');
+
+  var list = filtered();
+  var tbody = $('rows');
+  tbody.textContent = '';
+
+  list.forEach(function(r, i){
+    var tr = document.createElement('tr');
+
+    var n = document.createElement('td'); n.className = 'num'; n.textContent = String(list.length - i);
+    var e = document.createElement('td'); e.className = 'email'; e.textContent = r.email;
+    var l = document.createElement('td'); l.textContent = r.lang === 'ar' ? 'عربي' : (r.lang === 'en' ? 'English' : '—');
+    var d = document.createElement('td'); d.textContent = dateFmt.format(new Date(r.created_at));
+    var x = document.createElement('td');
+    var b = document.createElement('button');
+    b.className = 'del'; b.type = 'button'; b.textContent = 'حذف';
+    b.addEventListener('click', function(){ removeRow(r); });
+    x.appendChild(b);
+
+    tr.appendChild(n); tr.appendChild(e); tr.appendChild(l); tr.appendChild(d); tr.appendChild(x);
+    tbody.appendChild(tr);
+  });
+
+  var empty = $('emptyMsg');
+  if (list.length === 0){
+    empty.textContent = allRows.length === 0
+      ? 'ما سجّل أحد للحين. الإيميلات بتظهر هنا أول ما يسجلون من صفحة المتجر.'
+      : 'ما لقينا إيميل يطابق البحث.';
+    empty.classList.remove('hidden');
+  } else {
+    empty.classList.add('hidden');
+  }
+}
+
+/* ---------- actions ---------- */
+async function removeRow(r){
+  if (!confirm('تبي تحذف ' + r.email + ' ؟')) return;
+  try{
+    await api('subscribers?id=eq.' + encodeURIComponent(r.id), { method: 'DELETE', headers: { 'Prefer': 'return=minimal' } });
+    allRows = allRows.filter(function(x){ return x.id !== r.id; });
+    render();
+    toast('تم الحذف');
+  }catch(err){
+    if (err.message !== 'expired') toast('ما انحذف، حاول مرة ثانية');
+  }
+}
+
+function copyEmails(){
+  var text = filtered().map(function(r){ return r.email; }).join('\n');
+  if (!text) { toast('ما فيه إيميلات للنسخ'); return; }
+  navigator.clipboard.writeText(text).then(
+    function(){ toast('تم نسخ ' + filtered().length + ' إيميل'); },
+    function(){ toast('المتصفح منع النسخ'); }
+  );
+}
+
+function csvCell(v){
+  v = String(v == null ? '' : v);
+  if (/^[=+\-@\t\r]/.test(v)) v = "'" + v;      // stops spreadsheet formula injection
+  return '"' + v.replace(/"/g, '""') + '"';
+}
+
+function exportCsv(){
+  var list = filtered();
+  if (!list.length) { toast('ما فيه بيانات للتصدير'); return; }
+  var lines = ['Date,Email,Language'];
+  list.forEach(function(r){
+    lines.push([csvCell(r.created_at), csvCell(r.email), csvCell(r.lang)].join(','));
+  });
+  var blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'tea-estate-subscribers-' + dayKey(new Date().toISOString()) + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+}
+
+async function showDashboard(){
+  $('loginView').classList.add('hidden');
+  $('dashView').classList.remove('hidden');
+  try{ await loadAll(); }
+  catch(err){ if (err.message !== 'expired') toast('تعذر تحميل البيانات'); }
+}
+
+/* ---------- wiring ---------- */
+$('loginForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  var msg = $('loginMsg'), btn = $('loginBtn');
+  msg.textContent = '';
+  if (!configured()){ msg.textContent = 'الإعدادات ناقصة داخل ملف admin.html'; return; }
+  btn.disabled = true;
+  try{
+    await login($('pw').value);
+    $('pw').value = '';
+    await showDashboard();
+  }catch(err){
+    msg.textContent = 'الرمز غير صحيح';
+  }
+  btn.disabled = false;
+});
+
+$('logoutBtn').addEventListener('click', logout);
+$('refreshBtn').addEventListener('click', function(){ loadAll().then(function(){ toast('تم التحديث'); }).catch(function(){}); });
+$('copyBtn').addEventListener('click', copyEmails);
+$('csvBtn').addEventListener('click', exportCsv);
+$('search').addEventListener('input', render);
+
+(function init(){
+  var s = loadSession();
+  if (s && configured()){ session = s; showDashboard(); }
+})();
+</script>
+
+</body>
+</html>

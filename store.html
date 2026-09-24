@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title id="pageTitle">Our Store — Coming Soon | TEA ESTATE</title>
+<meta name="description" content="TEA ESTATE online store is coming soon. Leave your email and we will notify you when it opens.">
+
+<style>
+@font-face{
+  font-family:'Froadmile';
+  src:url('assets/fonts/Froadmile.ttf') format('truetype');
+  font-display:swap;
+}
+@font-face{
+  font-family:'Constantia';
+  src:url('assets/fonts/Constantia.ttf') format('truetype');
+  font-display:swap;
+}
+@font-face{
+  font-family:'Amiri';
+  src:url('assets/fonts/Amiri-Regular.ttf') format('truetype');
+  font-display:swap;
+}
+@font-face{
+  font-family:'ArefRuqaa';
+  src:url('assets/fonts/ArefRuqaa-Regular.ttf') format('truetype');
+  font-display:swap;
+}
+
+*{ box-sizing:border-box; }
+
+html{ background:#8a8f86; }
+
+/* Fixed background layer (works on iPhone, unlike background-attachment: fixed) */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:#8a8f86 url('assets/background.jpg') center top / cover no-repeat;
+}
+
+body{
+  margin:0;
+  min-height:100svh;
+  font-family:'Constantia', serif;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  padding: 40px 20px 50px;
+}
+
+.wrap{ width:100%; max-width:460px; position:relative; }
+a{ text-decoration:none; color:inherit; }
+
+/* Language toggle */
+.lang-toggle{
+  position:fixed;
+  top:16px;
+  right:16px;
+  z-index:50;
+  display:flex;
+  background: rgba(255,255,255,.25);
+  border:1px solid rgba(255,255,255,.45);
+  border-radius:999px;
+  padding:4px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+}
+.lang-btn{
+  border:none;
+  background:transparent;
+  color:#fff;
+  font-family:'Constantia', serif;
+  font-size:13px;
+  letter-spacing:.3px;
+  padding:7px 14px;
+  border-radius:999px;
+  cursor:pointer;
+}
+.lang-btn.active{
+  background:#fff;
+  color:#2a1a10;
+  font-weight:bold;
+}
+
+/* Back to home */
+.back-btn{
+  position:fixed;
+  top:16px;
+  left:16px;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:9px 14px 9px 10px;
+  border-radius:999px;
+  font-size:14px;
+  color:#fff;
+  background: rgba(255,255,255,.25);
+  border:1px solid rgba(255,255,255,.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+}
+.back-btn svg{ width:16px; height:16px; }
+
+.crest{
+  display:block;
+  width: min(72%, 300px);
+  margin: 40px auto -46px;
+  filter: drop-shadow(0 12px 20px rgba(20,15,5,.35));
+  position:relative;
+  z-index:2;
+}
+
+.card{
+  position:relative;
+  z-index:1;
+  padding: 64px 26px 30px;
+  border-radius: 34px;
+  background: linear-gradient(180deg, rgba(120,110,95,.42), rgba(90,82,70,.5));
+  border: 1px solid rgba(255,255,255,.25);
+  box-shadow: 0 20px 50px rgba(0,0,0,.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  text-align:center;
+}
+
+.headline{
+  font-family:'Froadmile', 'Constantia', serif;
+  font-size: clamp(38px, 11vw, 52px);
+  line-height:1.1;
+  color:#1c130a;
+  margin: 0 0 12px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.15);
+}
+
+.subhead{
+  font-size: clamp(17px, 5vw, 22px);
+  color:#fdf6ea;
+  margin: 0 0 26px;
+  text-shadow: 0 1px 6px rgba(0,0,0,.35);
+}
+
+/* Notify form */
+.notify{ display:flex; flex-direction:column; gap:14px; margin-bottom:24px; }
+
+.email-input{
+  width:100%;
+  padding: 17px 22px;
+  border-radius:999px;
+  border:1px solid rgba(214,161,90,.75);
+  background: rgba(255,255,255,.14);
+  color:#fff;
+  font-family:'Constantia', serif;
+  font-size:17px; /* 16px+ prevents iOS zoom on focus */
+  outline:none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.email-input::placeholder{ color:#f0dcb8; opacity:.9; }
+.email-input:focus{
+  border-color:#fff;
+  background: rgba(255,255,255,.22);
+  box-shadow: 0 0 0 3px rgba(255,255,255,.25);
+}
+
+.notify-btn{
+  width:100%;
+  padding: 17px 20px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.35);
+  font-family:'Constantia', serif;
+  font-size:19px;
+  color:#fff;
+  cursor:pointer;
+  background: linear-gradient(180deg, rgba(214,161,90,.9), rgba(198,133,60,.9));
+  box-shadow: 0 8px 18px rgba(0,0,0,.18);
+  transition: transform .15s ease, opacity .15s ease;
+}
+.notify-btn:active{ transform: scale(.98); }
+.notify-btn:focus-visible{ outline:3px solid #fff; outline-offset:2px; }
+.notify-btn:disabled{ opacity:.65; cursor:default; transform:none; }
+
+/* Honeypot field (hidden from real people, catches bots) */
+.hp{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+
+.status{
+  min-height:22px;
+  margin:0;
+  font-size:15px;
+  line-height:1.5;
+  color:#fdf6ea;
+  text-shadow: 0 1px 6px rgba(0,0,0,.45);
+}
+.status.error{ color:#ffd9d2; }
+
+.socials{
+  display:flex;
+  justify-content:center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.social-btn{
+  width:56px; height:56px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  box-shadow: 0 6px 14px rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.4);
+}
+.social-btn img{ width:100%; height:100%; object-fit:cover; }
+
+.footer-pill{
+  display:block;
+  text-align:center;
+  font-size:12px;
+  color:#fff;
+  opacity:.75;
+  letter-spacing:.4px;
+}
+
+@media (max-width:380px){
+  .notify-btn{ font-size:17px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; }
+}
+
+/* ===== Arabic / RTL mode ===== */
+html.lang-ar body{ direction: rtl; }
+html.lang-ar .headline{ font-family:'ArefRuqaa','Amiri', serif; line-height:1.4; }
+html.lang-ar .subhead,
+html.lang-ar .status,
+html.lang-ar .footer-pill,
+html.lang-ar .email-input,
+html.lang-ar .notify-btn{ font-family:'Amiri', serif; }
+html.lang-ar .back-btn{ left:auto; right:16px; padding:9px 10px 9px 14px; flex-direction:row-reverse; }
+html.lang-ar .back-btn svg{ transform:scaleX(-1); }
+html.lang-ar .lang-toggle{ right:auto; left:16px; }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="index.html" id="backLink">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  <span id="txt-back">Back</span>
+</a>
+
+<div class="lang-toggle" role="group" aria-label="Language">
+  <button type="button" id="btn-en" class="lang-btn" onclick="setLang('en')">EN</button>
+  <button type="button" id="btn-ar" class="lang-btn" onclick="setLang('ar')">عربي</button>
+</div>
+
+<div class="wrap">
+
+  <img id="crestImg" class="crest" src="assets/logo.png" alt="TEA ESTATE — Finest Artisan Blends">
+
+  <div class="card">
+    <h1 class="headline" id="headline">Coming Soon</h1>
+    <p class="subhead" id="subhead">A New Artisan Experience</p>
+
+    <form class="notify" id="notifyForm" novalidate>
+      <input class="hp" type="text" name="company" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input class="email-input" type="email" name="email" id="email"
+             inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false"
+             placeholder="Email Address" aria-label="Email Address" required>
+      <button class="notify-btn" type="submit" id="notifyBtn">Notify Me</button>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="socials">
+      <a class="social-btn" href="https://www.tiktok.com/@tea_estate" target="_blank" rel="noopener" aria-label="TikTok">
+        <img src="assets/tiktok.jpeg" alt="TikTok">
+      </a>
+      <a class="social-btn" href="https://www.instagram.com/teaestate_sa/" target="_blank" rel="noopener" aria-label="Instagram">
+        <img src="assets/instagram.jpeg" alt="Instagram">
+      </a>
+      <a class="social-btn" href="https://www.snapchat.com/add/tea_estate" target="_blank" rel="noopener" aria-label="Snapchat">
+        <img src="assets/snapchat.jpeg" alt="Snapchat">
+      </a>
+    </div>
+
+    <span class="footer-pill" id="txt-footer">2026 Powered by TEA ESTATE COMPANY</span>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   DATABASE SETTINGS (same values as in admin.html)
+   Use the "anon public" key only. Never put the service_role key here.
+   ============================================================ */
+var SUPABASE_URL      = "PASTE_SUPABASE_PROJECT_URL_HERE";
+var SUPABASE_ANON_KEY = "PASTE_ANON_PUBLIC_KEY_HERE";
+
+var translations = {
+  en: {
+    title: "Our Store — Coming Soon | TEA ESTATE",
+    headline: "Coming Soon",
+    subhead: "A New Artisan Experience",
+    placeholder: "Email Address",
+    button: "Notify Me",
+    sending: "Sending...",
+    back: "Back",
+    footer: "2026 Powered by TEA ESTATE COMPANY",
+    invalid: "Please enter a valid email address.",
+    success: "Thank you! We will email you as soon as our store opens.",
+    failure: "Something went wrong. Please try again in a moment."
+  },
+  ar: {
+    title: "المتجر — قريباً | تي استيت",
+    headline: "قريباً",
+    subhead: "تجربة حرفية جديدة",
+    placeholder: "البريد الإلكتروني",
+    button: "أبلغني",
+    sending: "جاري الإرسال...",
+    back: "رجوع",
+    footer: "٢٠٢٦ بدعم من TEA ESTATE",
+    invalid: "الرجاء إدخال بريد إلكتروني صحيح.",
+    success: "شكراً لك! بنرسل لك إشعار أول ما يفتح المتجر.",
+    failure: "صار خطأ، حاول مرة ثانية بعد قليل."
+  }
+};
+
+var currentLang = 'en';
+var lastStatusKey = '';
+
+function setStatus(key, isError){
+  var el = document.getElementById('status');
+  lastStatusKey = key || '';
+  el.textContent = key ? translations[currentLang][key] : '';
+  el.classList.toggle('error', !!isError);
+}
+
+function setLang(lang){
+  currentLang = translations[lang] ? lang : 'en';
+  var t = translations[currentLang];
+
+  document.title = t.title;
+  document.getElementById('headline').textContent = t.headline;
+  document.getElementById('subhead').textContent = t.subhead;
+  document.getElementById('email').placeholder = t.placeholder;
+  document.getElementById('email').setAttribute('aria-label', t.placeholder);
+  document.getElementById('notifyBtn').textContent = t.button;
+  document.getElementById('txt-back').textContent = t.back;
+  document.getElementById('txt-footer').textContent = t.footer;
+
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = (currentLang === 'ar') ? 'rtl' : 'ltr';
+  document.documentElement.classList.toggle('lang-ar', currentLang === 'ar');
+
+  document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+  document.getElementById('btn-ar').classList.toggle('active', currentLang === 'ar');
+
+  if (lastStatusKey && lastStatusKey !== 'sending') {
+    setStatus(lastStatusKey, document.getElementById('status').classList.contains('error'));
+  }
+
+  try{ localStorage.setItem('teaEstateLang', currentLang); }catch(e){}
+}
+
+document.getElementById('notifyForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  var email = document.getElementById('email').value.trim();
+  var btn = document.getElementById('notifyBtn');
+
+  // Bots fill the hidden field; pretend success and stop.
+  if (document.getElementById('hp').value) { setStatus('success', false); return; }
+
+  var ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+  if (!ok) { setStatus('invalid', true); document.getElementById('email').focus(); return; }
+
+  if (SUPABASE_URL.indexOf('https://') !== 0) {
+    console.error('store.html: fill in SUPABASE_URL and SUPABASE_ANON_KEY before publishing.');
+    setStatus('failure', true);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = translations[currentLang].sending;
+  setStatus('', false);
+
+  fetch(SUPABASE_URL + '/rest/v1/subscribers', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({ email: email.toLowerCase(), lang: currentLang, source: 'store-coming-soon' })
+  }).then(function(res){
+    // 409 = this email is already registered: show success anyway
+    if (res.ok || res.status === 409) {
+      document.getElementById('email').value = '';
+      setStatus('success', false);
+    } else if (res.status === 400) {
+      setStatus('invalid', true);
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  }).catch(function(){
+    setStatus('failure', true);
+  }).then(function(){
+    btn.disabled = false;
+    btn.textContent = translations[currentLang].button;
+  });
+});
+
+(function init(){
+  var saved = null;
+  try{ saved = localStorage.getItem('teaEstateLang'); }catch(e){}
+  if (!saved) {
+    saved = (navigator.language || 'en').toLowerCase().indexOf('ar') === 0 ? 'ar' : 'en';
+  }
+  setLang(saved);
+})();
+</script>
+
+</body>
+</html>
