@@ -295,8 +295,8 @@ html.lang-ar .lang-toggle{ right:auto; left:16px; }
    DATABASE SETTINGS (same values as in admin.html)
    Use the "anon public" key only. Never put the service_role key here.
    ============================================================ */
-var SUPABASE_URL      = "PASTE_SUPABASE_PROJECT_URL_HERE";
-var SUPABASE_ANON_KEY = "PASTE_ANON_PUBLIC_KEY_HERE";
+var SUPABASE_URL      = "https://yayodgunqopagdzsvqno.supabase.co";
+var SUPABASE_ANON_KEY = "sb_publishable_GHqEYKYOTTyfuVnH9AeXjQ_dN6xLNgK";
 
 var translations = {
   en: {
@@ -386,14 +386,13 @@ document.getElementById('notifyForm').addEventListener('submit', function(e){
   btn.textContent = translations[currentLang].sending;
   setStatus('', false);
 
+  var hdrs = { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY, 'Prefer': 'return=minimal' };
+  // Old-style anon keys (start with eyJ) are JWTs and go in Authorization too; new sb_publishable keys do not.
+  if (SUPABASE_ANON_KEY.indexOf('eyJ') === 0) { hdrs['Authorization'] = 'Bearer ' + SUPABASE_ANON_KEY; }
+
   fetch(SUPABASE_URL + '/rest/v1/subscribers', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
-      'Prefer': 'return=minimal'
-    },
+    headers: hdrs,
     body: JSON.stringify({ email: email.toLowerCase(), lang: currentLang, source: 'store-coming-soon' })
   }).then(function(res){
     // 409 = this email is already registered: show success anyway
