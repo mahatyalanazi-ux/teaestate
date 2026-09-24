@@ -49,13 +49,15 @@ body{
 .wrap{ width:100%; max-width:460px; position:relative; }
 a{ text-decoration:none; color:inherit; }
 
-/* Language toggle */
+/* Language toggle (fixed position, sliding thumb) */
 .lang-toggle{
   position:fixed;
   top:16px;
   right:16px;
   z-index:50;
-  display:flex;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  direction:ltr;
   background: rgba(255,255,255,.25);
   border:1px solid rgba(255,255,255,.45);
   border-radius:999px;
@@ -64,7 +66,26 @@ a{ text-decoration:none; color:inherit; }
   -webkit-backdrop-filter: blur(6px);
   box-shadow: 0 4px 12px rgba(0,0,0,.2);
 }
+.lang-thumb{
+  position:absolute;
+  top:4px;
+  bottom:4px;
+  left:4px;
+  width:calc((100% - 8px) / 2);
+  border-radius:999px;
+  background:#fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+  transform: translateX(0);
+  transition: transform .4s cubic-bezier(.65,0,.35,1);
+  will-change: transform;
+  pointer-events:none;
+}
+.lang-toggle[data-lang="ar"] .lang-thumb{ transform: translateX(100%); }
+.lang-toggle.no-anim .lang-thumb,
+.lang-toggle.no-anim .lang-btn{ transition:none !important; }
 .lang-btn{
+  position:relative;
+  z-index:1;
   border:none;
   background:transparent;
   color:#fff;
@@ -74,10 +95,10 @@ a{ text-decoration:none; color:inherit; }
   padding:7px 14px;
   border-radius:999px;
   cursor:pointer;
-  transition: background .15s ease, color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+  transition: color .3s ease;
 }
 .lang-btn.active{
-  background:#fff;
   color:#2a1a10;
   font-weight:bold;
 }
@@ -201,7 +222,8 @@ html.lang-ar .link-btn .badge{ left:auto; right:20px; }
 </head>
 <body>
 
-<div class="lang-toggle" role="group" aria-label="Language">
+<div class="lang-toggle" id="langToggle" data-lang="en" role="group" aria-label="Language">
+  <span class="lang-thumb" aria-hidden="true"></span>
   <button type="button" id="btn-en" class="lang-btn" onclick="setLang('en')">EN</button>
   <button type="button" id="btn-ar" class="lang-btn" onclick="setLang('ar')">عربي</button>
 </div>
@@ -285,10 +307,10 @@ var translations = {
     subhead: "تراث أصيل | أجود الخلطات الحرفية",
     tagline: "شاي فاخر • بيتزا حرفية • قهوة مختصة",
     menu: "المنيو",
-    location: "فروعنا",
+    location: "موقع فرع الرياض",
     store: "المتجر",
     support: "خدمة العملاء",
-    footer: "٢٠٢٦ بدعم من TEA ESTATE"
+    footer: "يتم تشغيله بواسطة شركة تي استيت 2026"
   }
 };
 
@@ -311,6 +333,7 @@ function setLang(lang){
   document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
   document.documentElement.classList.toggle('lang-ar', lang === 'ar');
 
+  document.getElementById('langToggle').setAttribute('data-lang', lang);
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
 
@@ -320,7 +343,11 @@ function setLang(lang){
 (function init(){
   var saved = 'en';
   try{ saved = localStorage.getItem('teaEstateLang') || 'en'; }catch(e){}
+  var tg = document.getElementById('langToggle');
+  tg.classList.add('no-anim');
   setLang(saved);
+  void tg.offsetWidth;
+  tg.classList.remove('no-anim');
 })();
 </script>
 
