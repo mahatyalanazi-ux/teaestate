@@ -5,27 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title id="pageTitle">TEA ESTATE — Finest Artisan Blends</title>
 <meta name="description" content="Premium teas, artisanal pizzas, and specialty coffee. Menu, location and support for TEA ESTATE, Riyadh.">
+<link rel="preload" href="Constantia.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="Froadmile.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="logo.png" as="image">
+<link rel="preload" href="background.jpg" as="image">
 
 <style>
 @font-face{
   font-family:'Froadmile';
-  src:url('Froadmile.ttf') format('truetype');
-  font-display:swap;
+  src:url('Froadmile.woff') format('woff'), url('Froadmile.ttf') format('truetype');
+  font-display:block;
 }
 @font-face{
   font-family:'Constantia';
-  src:url('Constantia.ttf') format('truetype');
-  font-display:swap;
+  src:url('Constantia.woff') format('woff'), url('Constantia.ttf') format('truetype');
+  font-display:block;
 }
 @font-face{
   font-family:'Amiri';
-  src:url('Amiri-Regular.ttf') format('truetype');
-  font-display:swap;
+  src:url('Amiri-Regular.woff') format('woff'), url('Amiri-Regular.ttf') format('truetype');
+  font-display:block;
 }
 @font-face{
   font-family:'ArefRuqaa';
-  src:url('ArefRuqaa-Regular.ttf') format('truetype');
-  font-display:swap;
+  src:url('ArefRuqaa-Regular.woff') format('woff'), url('ArefRuqaa-Regular.ttf') format('truetype');
+  font-display:block;
 }
 
 :root{
@@ -374,6 +378,9 @@ function fitHeadline(){
   }
 }
 window.addEventListener('resize', fitHeadline);
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(fitHeadline);
+}
 
 (function init(){
   var saved = 'en';
