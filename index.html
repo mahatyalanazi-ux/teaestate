@@ -139,6 +139,8 @@ a{ text-decoration:none; color:inherit; }
   color:#1c130a;
   margin: 0 0 14px;
   text-shadow: 0 1px 0 rgba(255,255,255,.15);
+  white-space: nowrap;
+  display:block;
 }
 
 .subhead{
@@ -351,7 +353,24 @@ function setLang(lang){
   document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
 
   try{ localStorage.setItem('teaEstateLang', lang); }catch(e){}
+
+  fitHeadline();
 }
+
+function fitHeadline(){
+  var el = document.getElementById('headline');
+  if(!el) return;
+  el.style.fontSize = '';
+  var maxFont = parseFloat(getComputedStyle(el).fontSize);
+  var minFont = 14;
+  var containerWidth = el.parentElement.clientWidth;
+  var fontSize = maxFont;
+  while(el.scrollWidth > containerWidth && fontSize > minFont){
+    fontSize -= 1;
+    el.style.fontSize = fontSize + 'px';
+  }
+}
+window.addEventListener('resize', fitHeadline);
 
 (function init(){
   var saved = 'en';
