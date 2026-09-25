@@ -60,9 +60,14 @@ a{ text-decoration:none; color:inherit; }
   top:16px;
   right:16px;
   z-index:50;
+  direction:ltr;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.lang-toggle-inner{
+  position:relative;
   display:grid;
   grid-template-columns:1fr 1fr;
-  direction:ltr;
   background: rgba(255,255,255,.25);
   border:1px solid rgba(255,255,255,.45);
   border-radius:999px;
@@ -272,9 +277,11 @@ html.lang-ar .notify-btn{ font-family:'Amiri', serif; }
 </a>
 
 <div class="lang-toggle" id="langToggle" data-lang="en" role="group" aria-label="Language">
+  <div class="lang-toggle-inner">
   <span class="lang-thumb" aria-hidden="true"></span>
   <button type="button" id="btn-en" class="lang-btn" onclick="setLang('en')">EN</button>
   <button type="button" id="btn-ar" class="lang-btn" onclick="setLang('ar')">عربي</button>
+  </div>
 </div>
 
 <div class="wrap">

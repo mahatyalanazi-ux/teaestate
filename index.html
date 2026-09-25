@@ -40,7 +40,7 @@ body{
   min-height:100svh;
   font-family:'Constantia', serif;
   color:#fff;
-  background:#8a8f86 url('background.jpg') center top / cover no-repeat fixed;
+  background:#8a8f86 url('background.jpg') center top / cover no-repeat;
   display:flex;
   justify-content:center;
   padding: 40px 20px 50px;
@@ -52,12 +52,14 @@ a{ text-decoration:none; color:inherit; }
 /* Language toggle (fixed position, sliding thumb) */
 .lang-toggle{
   position:fixed;
-  top:16px;
-  right:16px;
+  top:calc(16px + env(safe-area-inset-top));
+  right:calc(16px + env(safe-area-inset-right));
   z-index:50;
   direction:ltr;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
 }
 .lang-toggle-inner{
   position:relative;
