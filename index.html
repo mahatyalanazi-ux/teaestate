@@ -49,17 +49,13 @@ body{
 .wrap{ width:100%; max-width:460px; position:relative; }
 a{ text-decoration:none; color:inherit; }
 
-/* Language toggle (fixed position, sliding thumb) */
+/* Language toggle (pinned to viewport top, sliding thumb) */
 .lang-toggle{
-  position:fixed;
+  position:absolute;
   top:calc(16px + env(safe-area-inset-top));
   right:calc(16px + env(safe-area-inset-right));
   z-index:50;
   direction:ltr;
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
-  -webkit-backface-visibility:hidden;
-  backface-visibility:hidden;
 }
 .lang-toggle-inner{
   position:relative;
@@ -297,6 +293,30 @@ html.lang-ar .link-btn .badge{ left:auto; right:20px; }
 
 </div>
 
+<script>
+// Keep the language toggle pinned to the top of the viewport no matter
+// how the page scrolls (works around Safari/iOS quirks with position:fixed).
+(function(){
+  var el = document.getElementById('langToggle');
+  if(!el) return;
+  var baseTop = null;
+  function getBaseTop(){
+    var prevTop = el.style.top;
+    el.style.top = '';
+    var cssTop = parseFloat(getComputedStyle(el).top) || 0;
+    el.style.top = prevTop;
+    return cssTop;
+  }
+  function pin(){
+    if(baseTop === null) baseTop = getBaseTop();
+    el.style.top = (baseTop + window.scrollY) + 'px';
+  }
+  window.addEventListener('scroll', pin, {passive:true});
+  window.addEventListener('resize', function(){ baseTop = null; pin(); });
+  window.addEventListener('orientationchange', function(){ baseTop = null; pin(); });
+  pin();
+})();
+</script>
 <script>
 var translations = {
   en: {
