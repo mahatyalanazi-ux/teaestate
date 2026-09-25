@@ -296,7 +296,7 @@ html.lang-ar .link-btn .badge{ left:auto; right:20px; }
       </a>
     </div>
 
-    <span class="footer-pill" id="txt-footer">2026 Powered by TEA ESTATE COMPANY</span>
+    <span class="footer-pill" id="txt-footer">Powered by TEA ESTATE COMPANY 2026</span>
   </div>
 
 </div>
@@ -313,7 +313,7 @@ var translations = {
     location: "Riyadh Branch Location",
     store: "Our Store",
     support: "Guest Care & Support",
-    footer: "2026 Powered by TEA ESTATE COMPANY"
+    footer: "Powered by TEA ESTATE COMPANY 2026"
   },
   ar: {
     title: "تي استيت — أجود الخلطات الحرفية",
@@ -363,7 +363,10 @@ function fitHeadline(){
   el.style.fontSize = '';
   var maxFont = parseFloat(getComputedStyle(el).fontSize);
   var minFont = 14;
-  var containerWidth = el.parentElement.clientWidth;
+  var parent = el.parentElement;
+  var parentStyle = getComputedStyle(parent);
+  var paddingX = parseFloat(parentStyle.paddingLeft) + parseFloat(parentStyle.paddingRight);
+  var containerWidth = parent.clientWidth - paddingX;
   var fontSize = maxFont;
   while(el.scrollWidth > containerWidth && fontSize > minFont){
     fontSize -= 1;
