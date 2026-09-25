@@ -49,12 +49,15 @@ body{
 .wrap{ width:100%; max-width:460px; position:relative; }
 a{ text-decoration:none; color:inherit; }
 
-/* Language toggle (pinned to viewport top, sliding thumb) */
+/* Language toggle (scrolls away with the page, no longer fixed) */
+.lang-toggle-row{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:14px;
+}
 .lang-toggle{
-  position:absolute;
-  top:calc(16px + env(safe-area-inset-top));
-  right:calc(16px + env(safe-area-inset-right));
-  z-index:50;
+  position:static;
+  z-index:5;
   direction:ltr;
 }
 .lang-toggle-inner{
@@ -227,15 +230,17 @@ html.lang-ar .link-btn .badge{ left:auto; right:20px; }
 </head>
 <body>
 
-<div class="lang-toggle" id="langToggle" data-lang="en" role="group" aria-label="Language">
-  <div class="lang-toggle-inner">
-  <span class="lang-thumb" aria-hidden="true"></span>
-  <button type="button" id="btn-en" class="lang-btn" onclick="setLang('en')">EN</button>
-  <button type="button" id="btn-ar" class="lang-btn" onclick="setLang('ar')">عربي</button>
-  </div>
-</div>
-
 <div class="wrap">
+
+  <div class="lang-toggle-row">
+    <div class="lang-toggle" id="langToggle" data-lang="en" role="group" aria-label="Language">
+      <div class="lang-toggle-inner">
+      <span class="lang-thumb" aria-hidden="true"></span>
+      <button type="button" id="btn-en" class="lang-btn" onclick="setLang('en')">EN</button>
+      <button type="button" id="btn-ar" class="lang-btn" onclick="setLang('ar')">عربي</button>
+      </div>
+    </div>
+  </div>
 
   <img id="crestImg" class="crest" src="logo.png" alt="TEA ESTATE — Finest Artisan Blends">
 
@@ -293,30 +298,6 @@ html.lang-ar .link-btn .badge{ left:auto; right:20px; }
 
 </div>
 
-<script>
-// Keep the language toggle pinned to the top of the viewport no matter
-// how the page scrolls (works around Safari/iOS quirks with position:fixed).
-(function(){
-  var el = document.getElementById('langToggle');
-  if(!el) return;
-  var baseTop = null;
-  function getBaseTop(){
-    var prevTop = el.style.top;
-    el.style.top = '';
-    var cssTop = parseFloat(getComputedStyle(el).top) || 0;
-    el.style.top = prevTop;
-    return cssTop;
-  }
-  function pin(){
-    if(baseTop === null) baseTop = getBaseTop();
-    el.style.top = (baseTop + window.scrollY) + 'px';
-  }
-  window.addEventListener('scroll', pin, {passive:true});
-  window.addEventListener('resize', function(){ baseTop = null; pin(); });
-  window.addEventListener('orientationchange', function(){ baseTop = null; pin(); });
-  pin();
-})();
-</script>
 <script>
 var translations = {
   en: {
