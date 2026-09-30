@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title id="pageTitle">TEA ESTATE — Finest Artisan Blends</title>
 <meta name="description" content="Premium teas, artisanal pizzas, and specialty coffee. Menu, location and support for TEA ESTATE, Riyadh.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TEA ESTATE">
+<meta property="og:title" content="TEA ESTATE — Finest Artisan Blends">
+<meta property="og:description" content="شاي فاخر • بيتزا حرفية • قهوة مختصة | Premium Tea • Crafted Pizza • Specialty Coffee — Riyadh">
+<meta property="og:url" content="https://www.teaestate.sa/">
+<meta property="og:image" content="https://www.teaestate.sa/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.teaestate.sa/og-image.jpg">
 <link rel="preload" href="Constantia.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="Froadmile.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="logo.png" as="image">
@@ -110,6 +121,7 @@ a{ text-decoration:none; color:inherit; }
   color:#fff;
   font-family:'Constantia', serif;
   font-size:13px;
+  line-height:20px;
   letter-spacing:.3px;
   padding:7px 14px;
   border-radius:999px;
@@ -147,9 +159,11 @@ a{ text-decoration:none; color:inherit; }
 .headline{
   font-family:'Froadmile', 'Constantia', serif;
   font-size: clamp(30px, 8vw, 42px);
-  line-height:1.15;
+  line-height:56px;
+  height:56px;
+  overflow:visible;
   color:#1c130a;
-  margin: 0 0 14px;
+  margin: 0 0 10px;
   text-shadow: 0 1px 0 rgba(255,255,255,.15);
   white-space: nowrap;
   display:block;
@@ -160,7 +174,9 @@ a{ text-decoration:none; color:inherit; }
   letter-spacing: 1px;
   text-transform: uppercase;
   color:#fdf6ea;
-  margin: 0 0 16px;
+  line-height:22px;
+  height:22px;
+  margin: 0 0 12px;
   text-shadow: 0 1px 6px rgba(0,0,0,.35);
   white-space: nowrap;
 }
@@ -169,7 +185,9 @@ a{ text-decoration:none; color:inherit; }
   font-size: clamp(10px, 3.4vw, 15px);
   letter-spacing:.1px;
   color:#fdf6ea;
-  margin: 0 0 28px;
+  line-height:26px;
+  height:26px;
+  margin: 0 0 30px;
   text-shadow: 0 1px 6px rgba(0,0,0,.35);
   white-space: nowrap;
 }
@@ -182,7 +200,9 @@ a{ text-decoration:none; color:inherit; }
   align-items:center;
   justify-content:center;
   gap:10px;
-  padding: 18px 20px;
+  height:62px;
+  padding: 0 56px;
+  line-height:1;
   border-radius: 999px;
   font-family:'Constantia', serif;
   font-size: 19px;
@@ -223,13 +243,15 @@ a{ text-decoration:none; color:inherit; }
   display:block;
   text-align:center;
   font-size:12px;
+  line-height:18px;
+  height:18px;
   color:#fff;
   opacity:.75;
   letter-spacing:.4px;
 }
 
 @media (max-width:380px){
-  .link-btn{ font-size:17px; padding:16px 16px; }
+  .link-btn{ font-size:17px; height:58px; }
   .headline{ font-size: 28px; }
 }
 
@@ -238,7 +260,8 @@ html.lang-ar body{ direction: rtl; }
 html.lang-ar .headline{ font-family:'ArefRuqaa','Amiri', serif; }
 html.lang-ar .subhead{ letter-spacing:0; text-transform:none; font-family:'Amiri', serif; font-size: clamp(11px, 3.4vw, 15px); }
 html.lang-ar .tagline{ font-family:'Amiri', serif; font-size: clamp(12px, 3.8vw, 16px); }
-html.lang-ar .link-btn{ font-family:'Amiri', serif; }
+html.lang-ar .link-btn{ font-family:'Amiri', serif; font-size:21px; }
+@media (max-width:380px){ html.lang-ar .link-btn{ font-size:19px; } }
 html.lang-ar .footer-pill{ font-family:'Amiri', serif; }
 html.lang-ar .link-btn .badge{ left:auto; right:20px; }
 </style>
