@@ -44,18 +44,10 @@ body{
   min-height:100svh;
   font-family:'Constantia', serif;
   color:#fff;
-  background:#8a8f86;
+  background:#8a8f86 url('background.jpg') top center / cover no-repeat;
   display:flex;
   justify-content:center;
   padding: 40px 20px 50px;
-  position:relative;
-}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:url('background.jpg') center top / cover no-repeat;
-  z-index:-1;
 }
 
 .wrap{ width:100%; max-width:460px; position:relative; }
@@ -148,11 +140,14 @@ a{ text-decoration:none; color:inherit; }
   font-family:'Froadmile', 'Constantia', serif;
   font-size: clamp(30px, 8vw, 42px);
   line-height:1.15;
+  min-height: calc(clamp(30px, 8vw, 42px) * 1.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
   color:#1c130a;
   margin: 0 0 14px;
   text-shadow: 0 1px 0 rgba(255,255,255,.15);
   white-space: nowrap;
-  display:block;
 }
 
 .subhead{
