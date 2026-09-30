@@ -44,10 +44,18 @@ body{
   min-height:100svh;
   font-family:'Constantia', serif;
   color:#fff;
-  background:#8a8f86 url('background.jpg') center top / cover no-repeat;
+  background:#8a8f86;
   display:flex;
   justify-content:center;
   padding: 40px 20px 50px;
+  position:relative;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:url('background.jpg') center top / cover no-repeat;
+  z-index:-1;
 }
 
 .wrap{ width:100%; max-width:460px; position:relative; }
@@ -322,7 +330,7 @@ var translations = {
   ar: {
     title: "تي استيت — أجود الخلطات الحرفية",
     crestAlt: "تي استيت — أجود الخلطات الحرفية",
-    headline: "المصدر الأصلي للشاي النقي",
+    headline: "المصدر الأصلي للشاي الأصيل",
     subhead: "تراث أصيل | أجود الخلطات الحرفية",
     tagline: "شاي فاخر • بيتزا حرفية • قهوة مختصة",
     menu: "المنيو",
