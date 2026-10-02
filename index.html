@@ -28,30 +28,53 @@
 <meta name="twitter:image" content="https://www.teaestate.sa/og-image.jpg">
 <meta name="twitter:image:alt" content="TEA ESTATE — Finest Artisan Blends">
 
-<link rel="preload" href="Constantia.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="Froadmile.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="logo.png" as="image">
-<link rel="preload" href="background.jpg" as="image">
+<script>
+(function(){
+  var l=null; try{ l=localStorage.getItem('teaEstateLang'); }catch(e){}
+  if(!l) l='en';
+  if(l==='ar'){
+    var d=document.documentElement; d.lang='ar'; d.dir='rtl'; d.classList.add('lang-ar');
+    ['Amiri-Regular.woff2', 'ArefRuqaa-Regular.woff2'].forEach(function(f){
+      var k=document.createElement('link'); k.rel='preload'; k.as='font'; k.type='font/woff2'; k.crossOrigin='anonymous'; k.href=f;
+      document.head.appendChild(k);
+    });
+  }
+})();
+</script>
+<link rel="preload" href="logo.webp" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="background.webp" as="image" type="image/webp">
+<link rel="preload" href="Froadmile.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="Constantia-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="speculationrules">{"prefetch":[{"source":"list","urls":["menu.html","store.html"],"eagerness":"moderate"}]}</script>
 
 <style>
 @font-face{
   font-family:'Froadmile';
-  src:url('Froadmile.woff') format('woff'), url('Froadmile.ttf') format('truetype');
+  src:url('Froadmile.woff2') format('woff2'), url('Froadmile.woff') format('woff'), url('Froadmile.ttf') format('truetype');
   font-display:block;
+}
+/* Constantia: full file only for rare glyphs (Greek, Cyrillic, extended Latin, symbols);
+   the small Latin subset below covers all current text, so normally only it downloads. */
+@font-face{
+  font-family:'Constantia';
+  src:url('Constantia.woff2') format('woff2'), url('Constantia.woff') format('woff'), url('Constantia.ttf') format('truetype');
+  font-display:block;
+  unicode-range:U+0100-024F,U+02B0-02FF,U+0300-03FF,U+0400-04FF,U+1E00-1EFF,U+2070-209F,U+20A0-20CF,U+2100-27BF,U+FB00-FB04;
 }
 @font-face{
   font-family:'Constantia';
-  src:url('Constantia.woff') format('woff'), url('Constantia.ttf') format('truetype');
+  src:url('Constantia-latin.woff2') format('woff2'), url('Constantia.woff') format('woff');
   font-display:block;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face{
   font-family:'Amiri';
-  src:url('Amiri-Regular.woff') format('woff'), url('Amiri-Regular.ttf') format('truetype');
+  src:url('Amiri-Regular.woff2') format('woff2'), url('Amiri-Regular.woff') format('woff'), url('Amiri-Regular.ttf') format('truetype');
   font-display:block;
 }
 @font-face{
   font-family:'ArefRuqaa';
-  src:url('ArefRuqaa-Regular.woff') format('woff'), url('ArefRuqaa-Regular.ttf') format('truetype');
+  src:url('ArefRuqaa-Regular.woff2') format('woff2'), url('ArefRuqaa-Regular.woff') format('woff'), url('ArefRuqaa-Regular.ttf') format('truetype');
   font-display:block;
 }
 
@@ -94,7 +117,7 @@ body{
    room to sit under the bars; a tiny script starts the page at scrollY = --rw, so the
    first screen looks exactly as before. */
 :root{
-  --bg-img:url('background.jpg');
+  --bg-img:url('background.webp');
   --bg-w:max(100vw, calc(100lvh * 0.5625));   /* = cover width for a 1080x1920 image */
   --rw:0px;
   --bl:0px;
@@ -170,7 +193,7 @@ a{ text-decoration:none; color:inherit; }
   background:#fff;
   box-shadow: 0 2px 8px rgba(0,0,0,.18);
   transform: translateX(0);
-  transition: transform .4s cubic-bezier(.65,0,.35,1);
+  transition: transform .3s cubic-bezier(.65,0,.35,1);
   will-change: transform;
   pointer-events:none;
 }
@@ -190,7 +213,7 @@ a{ text-decoration:none; color:inherit; }
   border-radius:999px;
   cursor:pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: color .3s ease;
+  transition: color .2s ease;
 }
 .lang-btn.active{
   color:#2a1a10;
@@ -199,6 +222,7 @@ a{ text-decoration:none; color:inherit; }
 
 .crest{
   display:block;
+  height:auto;
   width: min(72%, 300px);
   margin: 4px auto -46px;
   filter: drop-shadow(0 12px 20px rgba(20,15,5,.35));
@@ -270,7 +294,7 @@ a{ text-decoration:none; color:inherit; }
   box-shadow: 0 8px 18px rgba(0,0,0,.18);
   transition: transform .15s ease, box-shadow .15s ease;
 }
-.link-btn:active{ transform: scale(.98); }
+.link-btn:active{ transform: scale(.98); transition-duration:0s; }
 
 .link-btn .badge{
   position:absolute;
@@ -322,6 +346,16 @@ html.lang-ar .tagline{ font-family:'Amiri', serif; font-size: clamp(12px, 3.8vw,
 html.lang-ar .link-btn{ font-family:'Amiri', serif; }
 html.lang-ar .footer-pill{ font-family:'Amiri', serif; }
 html.lang-ar .link-btn .badge{ left:auto; right:20px; }
+/* ===== Tap feedback (performance pass) =====
+   Press state applies instantly (0s); only the release eases back. No delay before navigation. */
+a, button{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.social-btn{ transition: transform .15s ease; }
+.social-btn:active{ transform: scale(.94); transition-duration:0s; }
+.lang-btn:active{ opacity:.7; }
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ transition-duration:0s !important; animation-duration:0s !important; }
+}
 </style>
 </head>
 <body>
@@ -341,7 +375,7 @@ html.lang-ar .link-btn .badge{ left:auto; right:20px; }
     </div>
   </div>
 
-  <img id="crestImg" class="crest" src="logo.png" alt="TEA ESTATE — Finest Artisan Blends">
+  <picture><source srcset="logo.webp" type="image/webp"><img id="crestImg" class="crest" src="logo.png" width="600" height="459" fetchpriority="high" alt="TEA ESTATE — Finest Artisan Blends"></picture>
 
   <div class="card">
     <h1 class="headline" id="headline">The Original Source of Pure Teas</h1>
@@ -382,13 +416,13 @@ html.lang-ar .link-btn .badge{ left:auto; right:20px; }
 
     <div class="socials">
       <a class="social-btn" href="https://www.tiktok.com/@tea_estate" target="_blank" rel="noopener" aria-label="TikTok">
-        <img src="tiktok.jpeg" alt="TikTok">
+        <img src="tiktok.webp" width="56" height="56" decoding="async" alt="TikTok">
       </a>
       <a class="social-btn" href="https://www.instagram.com/teaestate_sa/" target="_blank" rel="noopener" aria-label="Instagram">
-        <img src="instagram.jpeg" alt="Instagram">
+        <img src="instagram.webp" width="56" height="56" decoding="async" alt="Instagram">
       </a>
       <a class="social-btn" href="https://www.snapchat.com/add/tea_estate" target="_blank" rel="noopener" aria-label="Snapchat">
-        <img src="snapchat.jpeg" alt="Snapchat">
+        <img src="snapchat.webp" width="56" height="56" decoding="async" alt="Snapchat">
       </a>
     </div>
 
@@ -457,19 +491,41 @@ function fitHeadline(){
   var el = document.getElementById('headline');
   if(!el) return;
   el.style.fontSize = '';
+  /* Don't fit while the headline font is still loading (text is invisible then):
+     fitting the fallback font and refitting later moved the buttons ~13px (CLS). */
+  var fam = document.documentElement.classList.contains('lang-ar') ? 'ArefRuqaa' : 'Froadmile';
+  if(document.fonts && document.fonts.check && !document.fonts.check('16px ' + fam, el.textContent)){
+    document.fonts.load('16px ' + fam, el.textContent).then(fitHeadline, function(){});
+    return;
+  }
   var maxFont = parseFloat(getComputedStyle(el).fontSize);
   var minFont = 14;
   var parent = el.parentElement;
   var parentStyle = getComputedStyle(parent);
   var paddingX = parseFloat(parentStyle.paddingLeft) + parseFloat(parentStyle.paddingRight);
   var containerWidth = parent.clientWidth - paddingX;
-  var fontSize = maxFont;
+  var w = el.scrollWidth;
+  if(w <= containerWidth) return;                       /* fits: nothing to do */
+  /* text width scales with font size: jump straight to the fitting size, then fine-tune (0–2 steps) */
+  var fontSize = Math.max(minFont, maxFont - Math.floor(maxFont - maxFont * containerWidth / w));  /* same 1px steps as before */
+  el.style.fontSize = fontSize + 'px';
+  while(fontSize + 1 <= maxFont){
+    el.style.fontSize = (fontSize + 1) + 'px';
+    if(el.scrollWidth > containerWidth){ el.style.fontSize = fontSize + 'px'; break; }
+    fontSize++;
+  }
   while(el.scrollWidth > containerWidth && fontSize > minFont){
     fontSize -= 1;
     el.style.fontSize = fontSize + 'px';
   }
 }
-window.addEventListener('resize', fitHeadline);
+/* iOS Safari fires resize every time its toolbar shows/hides while scrolling (height only).
+   Only refit when the width really changes, once per frame. */
+var fitW = window.innerWidth, fitRaf = 0;
+window.addEventListener('resize', function(){
+  if(window.innerWidth === fitW || fitRaf) return;
+  fitRaf = requestAnimationFrame(function(){ fitRaf = 0; fitW = window.innerWidth; fitHeadline(); });
+});
 if(document.fonts && document.fonts.ready){
   document.fonts.ready.then(fitHeadline);
 }
@@ -490,15 +546,31 @@ if(document.fonts && document.fonts.ready){
    Re-applied after load (some browsers reset scroll at load end), never after the user touches the page. */
 (function(){
   var touched = false;
+  var r = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--rw')) || 0;  /* read once */
   function toRunway(){
-    if(touched) return;
-    var r = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--rw')) || 0;
-    if(r > 0 && (window.scrollY || window.pageYOffset) < r) window.scrollTo(0, r);
+    if(touched || !(r > 0)) return;
+    if((window.scrollY || window.pageYOffset) < r) window.scrollTo(0, r);
   }
   window.addEventListener('touchstart', function(){ touched = true; }, {passive:true, once:true});
+  document.addEventListener('touchstart', function(){}, {passive:true});
   toRunway();
   window.addEventListener('load', function(){ toRunway(); setTimeout(toRunway, 80); setTimeout(toRunway, 300); });
   window.addEventListener('pageshow', function(e){ if(e.persisted){ touched = false; } toRunway(); });
+})();
+</script>
+<script>
+(function(){
+  function warm(){
+    if(!document.fonts || !document.fonts.load) return;
+    var c = navigator.connection; if(c && (c.saveData || /2g/.test(c.effectiveType||''))) return;
+    ['16px Amiri','16px ArefRuqaa','16px Froadmile','16px Constantia'].forEach(function(f){
+      document.fonts.load(f, f.indexOf('Amiri')>0||f.indexOf('Aref')>0 ? '\u0639' : 'A').catch(function(){});
+    });
+    var lang = document.documentElement.classList.contains('lang-ar') ? 'ar' : 'en';
+    var im = new Image(); im.decoding = 'async'; im.src = 'menu-' + lang + '-1.webp';
+  }
+  function later(){ (window.requestIdleCallback || function(f){ setTimeout(f, 1200); })(warm, {timeout:3000}); }
+  if(document.readyState === 'complete') later(); else window.addEventListener('load', later);
 })();
 </script>
 </body>
