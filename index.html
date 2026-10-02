@@ -100,6 +100,10 @@ body{
 }
 @supports (-webkit-touch-callout:none){        /* iPhone / iPad Safari only */
   :root{ --rw:72px; --bl:120px; }
+  /* A fixed full-screen layer makes iOS 26 Safari paint a flat color strip under its
+     status bar / toolbar ON TOP of .bg-doc. Removed completely (display:none, not
+     opacity) so Safari shows the real image (.bg-doc) under its bars instead. */
+  .bg-layer{ display:none; }
 }
 .bg-layer{
   position:fixed;
