@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#b9ae95"><!-- FIX: Safari bar tint matches the image top instead of gray -->
 <title id="pageTitle">TEA ESTATE — Finest Artisan Blends</title>
 <meta name="description" content="Premium teas, artisanal pizzas, and specialty coffee. Menu, location and support for TEA ESTATE, Riyadh.">
 
@@ -62,36 +63,35 @@
 
 html{
   min-height:100%;
-  background:#8a8f86;
+  /* FIX: fallback behind the bg layer = image edge colors (top -> bottom), no more flat gray #8a8f86 */
+  background:#b9ae95 linear-gradient(180deg,#b9ae95 0%,#5b5938 100%);
+  overscroll-behavior-y:none; /* FIX: rubber-band can't reveal the fallback color */
 }
 
 body{
   margin:0;
-  min-height:100vh;
-  min-height:100dvh;
-  position:relative;
-  isolation:isolate;
+  min-height:100svh;
   font-family:'Constantia', serif;
   color:#fff;
-  background:transparent;
+  background:transparent; /* FIX: body no longer paints its own gray over the page */
   display:flex;
   justify-content:center;
   padding: 40px 20px 50px;
+  /* FIX: removed position:relative + isolation:isolate (not needed anymore) */
 }
 
-/* Viewport-only background: independent from content height and language. */
-body::before{
-  content:'';
+/* FIX: independent background layer (replaces body::before).
+   Height = 100lvh (largest viewport): it never changes when Safari's address bar
+   shows/hides, and never depends on content height or language. */
+.bg-layer{
   position:fixed;
-  top:0;
-  right:0;
-  bottom:0;
-  left:0;
-  z-index:-1;
-  background-image:url('background.jpg');
-  background-position:center center;
-  background-size:cover;
-  background-repeat:no-repeat;
+  top:0; left:0;
+  width:100%;
+  height:100vh;   /* fallback for old browsers */
+  height:100lvh;  /* FIX: stable height, ignores the dynamic toolbar */
+  z-index:-1;     /* below content, above the html fallback color */
+  background:url('background.jpg') center top / cover no-repeat;
+  transform:translateZ(0); /* FIX: own compositing layer on iOS, no jump while scrolling */
   pointer-events:none;
 }
 
@@ -287,6 +287,8 @@ html.lang-ar .link-btn .badge{ left:auto; right:20px; }
 </style>
 </head>
 <body>
+
+<div class="bg-layer" aria-hidden="true"></div><!-- FIX: independent background layer element -->
 
 <div class="wrap">
 
