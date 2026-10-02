@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#c3ae92">
+<meta name="theme-color" content="#b7b29a">
 <title>TEA ESTATE — Menu</title>
 <meta name="robots" content="noindex">
 <meta name="description" content="Premium Tea • Crafted Pizza • Specialty Coffee">
@@ -34,16 +34,10 @@
 html{
   -webkit-text-size-adjust:100%;
   min-height:100%;
-  /* Fallback only (seen if Safari ever paints its own band): image edge colors, never gray */
-  background:#c3ae92 linear-gradient(180deg,#c3ae92 0%,#595737 100%);
-  overscroll-behavior-y:none;
-  position:relative;
 }
 
 body{
-  margin:var(--rw) 0 var(--bl);
   min-height:100svh;
-  background:transparent;
   overflow-x:hidden;
   padding:
     max(12px, env(safe-area-inset-top))
@@ -53,54 +47,57 @@ body{
 }
 
 /* ===== Background — identical in index / menu / store =====
-   iOS 26 Safari never draws position:fixed layers under its status bar / bottom toolbar
-   (it fills those strips with one flat color). Only normal document content shows there.
-   So the background has two layers, both sized ONLY from viewport units (never from
-   content height, language or RTL/LTR), so they have the same scale and framing:
-   - .bg-layer (fixed): the stationary background you see while scrolling.
-   - .bg-doc (absolute, part of the document): sits behind it and is what Safari shows
-     under its status bar / toolbar.
-   On iOS only, a small top runway (--rw) + bottom bleed (--bl) give that document layer
-   room to sit under the bars; a tiny script starts the page at scrollY = --rw, so the
-   first screen looks exactly as before. */
+   ONE layer (.bg), ONE copy of background.webp. Size/position come only from viewport and
+   document geometry, never from language or text direction.
+   - Desktop / Chrome / Android: .bg is position:fixed → stationary cover image (unchanged look).
+   - iOS (WebKit): Safari 26+ never paints fixed/sticky layers under its status bar or toolbar.
+     It shows scrolling document pixels there, or (at scrollY = 0) a flat fill taken from body's
+     background-color; theme-color is ignored. So on iOS .bg is a normal document layer that
+     scrolls with the page and covers the whole document:
+       --bg-runway = status-bar safe area (device value, 0 in landscape). A one-time scroll to it
+                     puts real image pixels under the status bar; the first screen frames like Chrome.
+       --bg-bleed  = Safari's retractable toolbar height (100lvh - 100svh), so the image always
+                     continues under the bottom toolbar, even at the end of the page.
+   --bg-edge = the image's top-edge sky colour: what Safari fills the status strip with at scrollY 0. */
 :root{
   --bg-img:url('background.webp');
-  --bg-w:max(100vw, calc(100lvh * 0.5625));   /* = cover width for a 1080x1920 image */
-  --rw:0px;
-  --bl:0px;
+  --bg-edge:#b7b29a;
+  --bg-runway:0px;
+  --bg-bleed:0px;
 }
-@supports (-webkit-touch-callout:none){        /* iPhone / iPad Safari only */
-  :root{ --rw:72px; --bl:120px; }
-  /* A fixed full-screen layer makes iOS 26 Safari paint a flat color strip under its
-     status bar / toolbar ON TOP of .bg-doc. Removed completely (display:none, not
-     opacity) so Safari shows the real image (.bg-doc) under its bars instead. */
-  .bg-layer{ display:none; }
+html{
+  background-color:var(--bg-edge);
+  overscroll-behavior-y:none;
 }
-.bg-layer{
+body{
+  position:relative;     /* containing block for .bg on iOS */
+  z-index:0;             /* .bg (z -1) paints above body's colour, below all content */
+  margin:var(--bg-runway) 0 var(--bg-bleed);
+  background-color:var(--bg-edge);
+}
+.bg{
   position:fixed;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-  direction:ltr;
-}
-.bg-layer-img{
-  position:absolute;
   top:0; left:0; right:0;
   height:100vh;
   height:100lvh;
   min-height:100%;
+  z-index:-1;
+  pointer-events:none;
+  direction:ltr;         /* crop never depends on AR/EN direction */
   background:var(--bg-img) center top / cover no-repeat;
 }
-.bg-doc{
-  position:absolute;
-  top:0; right:0; bottom:0; left:0;
-  z-index:-2;
-  pointer-events:none;
-  direction:ltr;
-  background:
-    var(--bg-img) center top / var(--bg-w) auto no-repeat,
-    var(--bg-img) center bottom / var(--bg-w) auto no-repeat,
-    #595737;
+@supports (-webkit-touch-callout:none){        /* iOS / iPadOS WebKit */
+  :root{
+    --bg-runway:env(safe-area-inset-top, 0px);
+    --bg-bleed:calc(100lvh - 100svh);
+  }
+  .bg{
+    position:absolute;
+    top:0;
+    bottom:calc(0px - var(--bg-bleed));
+    height:auto;
+    min-height:0;
+  }
 }
 
 /* Menu column: near full width on phones, capped on iPad/desktop */
@@ -201,10 +198,10 @@ body{
 .pickup-btn[lang="ar"]{ font-family:'Amiri', 'Times New Roman', serif; font-size:21px; }
 
 /* keep the last menu page reachable above the button (only the missing space is added;
-   body already has a bottom padding and, on iPhone, the --bl bleed) */
+   body already has a bottom padding and, on iPhone, the --bg-bleed) */
 main.viewer{
   margin-bottom:calc(var(--pk-h) + 28px);
-  margin-bottom:max(0px, calc(var(--pk-h) + var(--pk-gap) + 12px - max(24px, env(safe-area-inset-bottom, 0px)) - var(--bl)));
+  margin-bottom:max(0px, calc(var(--pk-h) + var(--pk-gap) + 12px - max(24px, env(safe-area-inset-bottom, 0px)) - var(--bg-bleed)));
 }
 
 /* overlay + bottom sheet */
@@ -336,8 +333,7 @@ a, button{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
 </head>
 <body>
 
-<div class="bg-doc" aria-hidden="true"></div>
-<div class="bg-layer" aria-hidden="true"><div class="bg-layer-img"></div></div>
+<div class="bg" aria-hidden="true"></div>
 
 <a class="back-btn" href="/" id="backLink" aria-label="Back to TEA ESTATE home">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
@@ -540,21 +536,20 @@ window.addEventListener('storage', function(e){
 </script>
 
 <script>
-/* iOS: start just below the top runway so the background sits under Safari's status bar.
-   Re-applied after load (some browsers reset scroll at load end), never after the user touches the page. */
+/* iOS: Safari 26 shows real page pixels under the status bar only once the page is scrolled.
+   Start the page at the top runway (= status-bar safe area, read once from body's resolved
+   margin; 0 on desktop/Chrome/landscape → nothing runs). One-shot, no scroll/resize listeners. */
 (function(){
+  var r = parseFloat(getComputedStyle(document.body).marginTop) || 0;
+  if(!(r > 0)) return;
   var touched = false;
-  var r = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--rw')) || 0;  /* read once */
-  function toRunway(){
-    if(touched || !(r > 0)) return;
-    if((window.scrollY || window.pageYOffset) < r) window.scrollTo(0, r);
-  }
+  function seat(){ if(!touched && (window.scrollY || window.pageYOffset || 0) < r) window.scrollTo(0, r); }
   window.addEventListener('touchstart', function(){ touched = true; }, {passive:true, once:true});
-  document.addEventListener('touchstart', function(){}, {passive:true});
-  toRunway();
-  window.addEventListener('load', function(){ toRunway(); setTimeout(toRunway, 80); setTimeout(toRunway, 300); });
-  window.addEventListener('pageshow', function(e){ if(e.persisted){ touched = false; } toRunway(); });
+  seat();
+  window.addEventListener('load', seat, {once:true});
 })();
+/* Enables :active press styles on iOS (unrelated to the background; kept from the original). */
+document.addEventListener('touchstart', function(){}, {passive:true});
 </script>
 </body>
 </html>
