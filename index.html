@@ -74,24 +74,27 @@ body{
   font-family:'Constantia', serif;
   color:#fff;
   background:transparent; /* FIX: body no longer paints its own gray over the page */
+  overflow-x:hidden; /* FIX: no horizontal scroll */
   display:flex;
   justify-content:center;
   padding: 40px 20px 50px;
   /* FIX: removed position:relative + isolation:isolate (not needed anymore) */
 }
 
-/* FIX: independent background layer (replaces body::before).
-   Height = 100lvh (largest viewport): it never changes when Safari's address bar
-   shows/hides, and never depends on content height or language. */
+/* FIX (unified across index/menu/store): independent fixed background layer.
+   - height 100lvh = largest viewport, never changes with Safari toolbar or page height/language
+   - overscan (--bg-over) top & bottom so no html/body color can peek through at the edges
+   - image is NOT stretched: normal cover + center top on this layer only */
+:root{ --bg-over:48px; }
 .bg-layer{
   position:fixed;
-  top:0; left:0;
-  width:100%;
-  height:100vh;   /* fallback for old browsers */
-  height:100lvh;  /* FIX: stable height, ignores the dynamic toolbar */
-  z-index:-1;     /* below content, above the html fallback color */
+  left:0; width:100%;
+  top:calc(-1 * var(--bg-over));
+  height:calc(100vh + 2 * var(--bg-over));   /* fallback */
+  height:calc(100lvh + 2 * var(--bg-over));  /* stable viewport + overscan */
+  z-index:-1;
   background:url('background.jpg') center top / cover no-repeat;
-  transform:translateZ(0); /* FIX: own compositing layer on iOS, no jump while scrolling */
+  transform:translateZ(0);
   pointer-events:none;
 }
 
