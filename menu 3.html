@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#b9ae95"><!-- FIX: Safari bar tint matches image top -->
+<title>TEA ESTATE — Menu</title>
+<meta name="robots" content="noindex">
+<style>
+*{ box-sizing:border-box; }
+
+html{
+  /* FIX: fallback = image edge colors (top -> bottom), not flat gray */
+  background:#b9ae95 linear-gradient(180deg,#b9ae95 0%,#5b5938 100%);
+  overscroll-behavior-y:none; /* FIX: no rubber-band reveal */
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  margin:0;
+  min-height:100svh;
+  background:transparent; /* FIX: body no longer paints over the bg layer */
+  overflow-x:hidden;
+  padding:
+    max(12px, env(safe-area-inset-top))
+    max(10px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom))
+    max(10px, env(safe-area-inset-left));
+  /* FIX: removed position:relative + isolation:isolate (not needed anymore) */
+}
+
+/* FIX (unified across index/menu/store): independent fixed background layer.
+   - height 100lvh = largest viewport, never changes with Safari toolbar or page height/language
+   - overscan (--bg-over) top & bottom so no html/body color can peek through at the edges
+   - image is NOT stretched: normal cover + center top on this layer only */
+:root{ --bg-over:48px; }
+.bg-layer{
+  position:fixed;
+  left:0; width:100%;
+  top:calc(-1 * var(--bg-over));
+  height:calc(100vh + 2 * var(--bg-over));   /* fallback */
+  height:calc(100lvh + 2 * var(--bg-over));  /* stable viewport + overscan */
+  z-index:-1;
+  background:url('background.jpg') center top / cover no-repeat;
+  transform:translateZ(0);
+  pointer-events:none;
+}
+
+/* Menu column: near full width on phones, capped on iPad/desktop */
+.viewer{
+  width:100%;
+  max-width:900px;
+  margin:0 auto;
+  border-radius:14px;
+  overflow:hidden;
+  background:#f1efe8;
+  box-shadow:0 12px 36px rgba(0,0,0,.35);
+}
+
+/* Pages stack seamlessly, original ratio, never cropped */
+.viewer img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-width:100%;
+  margin:0;
+  border:0;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer" aria-hidden="true"></div><!-- FIX: independent background layer -->
+
+<main class="viewer" id="viewer" aria-label="Menu"></main>
+
+<script>
+/* Add new menu pages here, in display order. Paths are relative to this file. */
+var menus = {
+  en: [
+    "menu/en-1.webp",
+    "menu/en-2.webp",
+    "menu/en-3.webp",
+    "menu/en-4.webp"
+  ],
+  ar: [
+    "menu/ar-1.webp",
+    "menu/ar-2.webp",
+    "menu/ar-3.webp",
+    "menu/ar-4.webp"
+  ]
+};
+
+/* Native size of every page image (keeps layout stable while loading) */
+var PAGE_W = 1920, PAGE_H = 2215;
+
+var currentLang = null;
+
+function getLang(){
+  var l = 'en';
+  try{ l = localStorage.getItem('teaEstateLang') || 'en'; }catch(e){}
+  return (l === 'ar') ? 'ar' : 'en';
+}
+
+function render(){
+  var lang = getLang();
+  if(lang === currentLang) return;   /* nothing changed */
+  currentLang = lang;
+
+  var viewer = document.getElementById('viewer');
+  viewer.textContent = '';
+
+  document.documentElement.lang = lang;
+  document.title = (lang === 'ar') ? 'تي استيت — المنيو' : 'TEA ESTATE — Menu';
+  viewer.setAttribute('aria-label', (lang === 'ar') ? 'المنيو' : 'Menu');
+
+  var alt = (lang === 'ar') ? 'منيو تي استيت' : 'TEA ESTATE menu';
+  var pages = menus[lang];
+
+  for(var i = 0; i < pages.length; i++){
+    var img = new Image();
+    img.width = PAGE_W;
+    img.height = PAGE_H;
+    img.alt = alt + ' ' + (i + 1) + '/' + pages.length;
+    img.decoding = 'async';
+    img.draggable = false;
+    if(i === 0){
+      img.loading = 'eager';
+      img.setAttribute('fetchpriority', 'high');
+    }else{
+      img.loading = 'lazy';
+    }
+    img.src = pages[i];
+    viewer.appendChild(img);
+  }
+}
+
+render();
+
+/* Re-check language when coming back to this page (back button / bfcache / tab switch) */
+window.addEventListener('pageshow', render);
+document.addEventListener('visibilitychange', function(){
+  if(!document.hidden) render();
+});
+window.addEventListener('storage', function(e){
+  if(e.key === 'teaEstateLang') render();
+});
+</script>
+
+</body>
+</html>
