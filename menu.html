@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#c3ae92">
-<title>TEA ESTATE — Menu</title>
-<meta name="robots" content="noindex">
-<meta name="description" content="Premium Tea • Crafted Pizza • Specialty Coffee">
+<title>TEA ESTATE Menu | منيو تي استيت</title>
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="description" content="Tea Estate (تي استيت) menu: premium tea, crafted pizza and specialty coffee at our Al Ghadir branch in Riyadh. Pick-up service available via WhatsApp or phone.">
 <link rel="canonical" href="https://www.teaestate.sa/menu.html">
 
 <!-- Open Graph -->
@@ -28,6 +28,21 @@
 <meta name="twitter:description" content="Premium Tea • Crafted Pizza • Specialty Coffee">
 <meta name="twitter:image" content="https://www.teaestate.sa/og-menu.jpg">
 <meta name="twitter:image:alt" content="TEA ESTATE — Menu">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "WebPage",
+ "@id": "https://www.teaestate.sa/menu.html#webpage",
+ "url": "https://www.teaestate.sa/menu.html",
+ "name": "TEA ESTATE Menu | منيو تي استيت",
+ "isPartOf": {
+  "@id": "https://www.teaestate.sa/#website"
+ },
+ "about": {
+  "@id": "https://www.teaestate.sa/#business"
+ }
+}
+</script>
 <style>
 *{ box-sizing:border-box; }
 
@@ -410,7 +425,7 @@ function render(){
   viewer.textContent = '';
 
   document.documentElement.lang = lang;
-  document.title = (lang === 'ar') ? 'تي استيت — المنيو' : 'TEA ESTATE — Menu';
+  document.title = (lang === 'ar') ? 'منيو تي استيت | TEA ESTATE Menu' : 'TEA ESTATE Menu | منيو تي استيت';
   viewer.setAttribute('aria-label', (lang === 'ar') ? 'المنيو' : 'Menu');
   if(window.pickupSetLang) window.pickupSetLang(lang);   /* Pick up CTA */
   document.getElementById('txt-back').textContent = (lang === 'ar') ? 'رجوع' : 'Back';   /* Back to home */
@@ -424,7 +439,7 @@ function render(){
     var img = new Image();
     img.width = PAGE_W;
     img.height = PAGE_H;
-    img.alt = alt + ' ' + (i + 1) + '/' + pages.length;
+    img.alt = alt + ((lang === 'ar') ? ' — صفحة ' + (i + 1) + ' من ' + pages.length : ' — page ' + (i + 1) + ' of ' + pages.length);
     img.decoding = 'async';
     img.draggable = false;
     if(i === 0){
